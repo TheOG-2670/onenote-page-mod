@@ -1,0 +1,11 @@
+﻿/.vs/OneNoteTest/FileContentIndex
+/.vs/OneNoteTest
+/OneNoteTest/bin/Debug
+/OneNoteTest/obj/Debug
+/OneNoteTest/OneNoteTest.csproj
+/OneNoteTest/App.config
+/OneNoteTest/packages.config
+/packages
+*.sln
+flow diagram.drawio
+OneNoteTest/OneNoteTest.csproj.user
