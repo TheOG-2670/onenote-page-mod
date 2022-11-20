@@ -20,6 +20,7 @@ namespace OneNoteTest
 
             string notebookId = GetXmlObjectId(null, HierarchyScope.hsNotebooks, args[0]);
             Console.WriteLine(notebookId);
+            PrintElements(null, HierarchyScope.hsNotebooks, "name");
 
             string sectionId= GetXmlObjectId(notebookId, HierarchyScope.hsSections, args[1]);
             Console.WriteLine(sectionId);
@@ -38,12 +39,11 @@ namespace OneNoteTest
             xNameSpace = doc.Root.Name.Namespace;
         }
 
-        //traverse the xml tree for a given object (notebook, section, page) and return its ID
-        private static string GetXmlObjectId(string parent, HierarchyScope scope, string objectName)
+        //returns a list of xml elements from the hierarchy of a notebook, section, or page
+        private static List<XElement> GetXmlObjectElements(string parent, HierarchyScope scope)
         {
             string xml;
-            string nodeType=null;
-
+            string nodeType = null;
             app.GetHierarchy(parent, scope, out xml);
 
             switch (scope)
@@ -58,18 +58,32 @@ namespace OneNoteTest
                     nodeType = "Page";
                     break;
             }
-            
+
             XDocument doc = XDocument.Parse(xml);
-            List<XElement> docElements = doc.Descendants(xNameSpace + nodeType).ToList();
-            foreach (XElement element in docElements)
+            return doc.Descendants(xNameSpace + nodeType).ToList();
+        }
+
+        //search list of xml elements of an object (notebook, section, page) and return its ID based on the name provided
+        private static string GetXmlObjectId(string parent, HierarchyScope scope, string objectName)
+        {
+            foreach (XElement element in GetXmlObjectElements(parent, scope))
             {
                 if(element.Attribute("name").Value == objectName)
                 {
                     return element.Attribute("ID").Value;
                 }
             }
-
             return null;
+        }
+
+        //print the value of a specified attribute (such as name) for all elements
+        private static void PrintElements(string parent, HierarchyScope scope, string attributeName)
+        {
+            Console.WriteLine("\n=====\nAll element names:\n=====");
+            foreach (XElement element in GetXmlObjectElements(parent, scope))
+            {
+                Console.WriteLine(element.Attribute(attributeName).Value);
+            }
         }
     }
 }
