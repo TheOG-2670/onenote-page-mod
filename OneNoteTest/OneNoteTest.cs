@@ -10,6 +10,7 @@ namespace OneNoteTest
     {
         static Application app;
         static XNamespace xNameSpace;
+        static XElement page;
 
         static void Main(string[] args)
         {
@@ -22,6 +23,10 @@ namespace OneNoteTest
 
             string sectionId= GetXmlObjectId(notebookId, HierarchyScope.hsSections, args[1]);
             string pageId = GetXmlObjectId(sectionId, HierarchyScope.hsPages, args[2]);
+
+            List<XElement> pageElements=GetPageTexts(pageId);
+            pageElements.ForEach(e=>Console.WriteLine(e.Value));
+            UpdatePageTitle(pageElements, "test title");
         }
 
         //get notebook's xml namespace used for traversing the notebook tree and searching for nodes (namespace + nodeName)
@@ -69,6 +74,28 @@ namespace OneNoteTest
                 }
             }
             return null;
+        }
+
+        private static List<XElement> GetPageTexts(string pageId)
+        {
+            string pageXml;
+            app.GetPageContent(pageId, out pageXml, PageInfo.piAll);
+
+            XDocument pageDoc = XDocument.Parse(pageXml);
+            page = pageDoc.Descendants(xNameSpace + "Page").First();
+            XElement pageTitle = page.Descendants(xNameSpace + "Title").First();
+            XElement pageOutline = page.Descendants(xNameSpace + "Outline").First();
+            XElement pageBodyText = pageOutline.Descendants(xNameSpace + "T").First();
+            XElement pageTitleOE = pageTitle.Descendants(xNameSpace + "OE").First();
+            XElement pageTitleText = pageTitleOE.Descendants(xNameSpace + "T").First();
+
+            return new List<XElement>() { pageTitleText, pageBodyText };
+        }
+
+        private static void UpdatePageTitle(List<XElement> pageTexts, string newPageTitle)
+        {
+            pageTexts[0].Value = newPageTitle;
+            app.UpdatePageContent(page.ToString());
         }
 
         //print the value of a specified attribute (such as name) for all elements
