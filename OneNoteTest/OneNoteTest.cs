@@ -16,17 +16,12 @@ namespace OneNoteTest
             app = new Application();
 
             GetNameSpace();
-            Console.WriteLine(xNameSpace);
 
             string notebookId = GetXmlObjectId(null, HierarchyScope.hsNotebooks, args[0]);
-            Console.WriteLine(notebookId);
             PrintElements(null, HierarchyScope.hsNotebooks, "name");
 
             string sectionId= GetXmlObjectId(notebookId, HierarchyScope.hsSections, args[1]);
-            Console.WriteLine(sectionId);
-
             string pageId = GetXmlObjectId(sectionId, HierarchyScope.hsPages, args[2]);
-            Console.WriteLine(pageId);
         }
 
         //get notebook's xml namespace used for traversing the notebook tree and searching for nodes (namespace + nodeName)
