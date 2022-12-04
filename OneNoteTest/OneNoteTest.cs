@@ -1,50 +1,38 @@
 ﻿using Microsoft.Office.Interop.OneNote;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Xml.Linq;
 
 namespace OneNoteTest
 {
-    internal class OneNoteTest
+
+    public class Utils
     {
-        static Application app;
-        static XNamespace xNameSpace;
-        static XElement page;
-
-        static void Main(string[] args)
+        public static Application AppInstance
         {
-            app = new Application();
-
-            GetNameSpace();
-
-            string notebookId = GetXmlObjectId(null, HierarchyScope.hsNotebooks, args[0]);
-            PrintElements(null, HierarchyScope.hsNotebooks, "name");
-
-            string sectionId= GetXmlObjectId(notebookId, HierarchyScope.hsSections, args[1]);
-            string pageId = GetXmlObjectId(sectionId, HierarchyScope.hsPages, args[2]);
-
-            List<XElement> pageElements=GetPageTexts(pageId);
-            pageElements.ForEach(e=>Console.WriteLine(e.Value));
-            UpdatePageTitle(pageElements, "test title");
+            get;
+            set;
         }
-
+        
+        
         //get notebook's xml namespace used for traversing the notebook tree and searching for nodes (namespace + nodeName)
-        private static void GetNameSpace()
+        public static XNamespace GetNameSpace()
         {
             string notebookXml;
 
-            app.GetHierarchy(null, HierarchyScope.hsNotebooks, out notebookXml);
+            AppInstance.GetHierarchy(null, HierarchyScope.hsNotebooks, out notebookXml);
             XDocument doc = XDocument.Parse(notebookXml);
-            xNameSpace = doc.Root.Name.Namespace;
+            return doc.Root.Name.Namespace;
         }
 
         //returns a list of xml elements from the hierarchy of a notebook, section, or page
-        private static List<XElement> GetXmlObjectElements(string parent, HierarchyScope scope)
+        public static List<XElement> GetXmlObjectElements(string parent, HierarchyScope scope)
         {
             string xml;
             string nodeType = null;
-            app.GetHierarchy(parent, scope, out xml);
+            AppInstance.GetHierarchy(parent, scope, out xml);
 
             switch (scope)
             {
@@ -60,15 +48,15 @@ namespace OneNoteTest
             }
 
             XDocument doc = XDocument.Parse(xml);
-            return doc.Descendants(xNameSpace + nodeType).ToList();
+            return doc.Descendants(GetNameSpace() + nodeType).ToList();
         }
 
         //search list of xml elements of an object (notebook, section, page) and return its ID based on the name provided
-        private static string GetXmlObjectId(string parent, HierarchyScope scope, string objectName)
+        public static string GetXmlObjectId(string parent, HierarchyScope scope, string objectName)
         {
             foreach (XElement element in GetXmlObjectElements(parent, scope))
             {
-                if(element.Attribute("name").Value == objectName)
+                if (element.Attribute("name").Value == objectName)
                 {
                     return element.Attribute("ID").Value;
                 }
@@ -76,33 +64,95 @@ namespace OneNoteTest
             return null;
         }
 
-        private static List<XElement> GetPageTexts(string pageId)
+        public static void GetProperties(object obj)
+        {
+            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(obj))
+            {
+                Console.WriteLine($"{descriptor.Name}: {descriptor.GetValue(obj)}");
+            }
+        }
+    }
+
+    public class Page
+    {
+        private string pageId;
+        private XElement page, pageTitle, pageBody;
+
+        public Page(string id)
+        {
+            pageId = id;
+        }
+
+        public string Id
+        {
+            get { return pageId; }
+        }
+
+        public XElement Title
+        {
+            set { pageTitle = value; }
+            get { return pageTitle; }
+        }
+
+        public XElement Body
+        {
+            set { pageBody = value; }
+            get { return pageBody; }
+        }
+
+        public void GetPageElements()
         {
             string pageXml;
-            app.GetPageContent(pageId, out pageXml, PageInfo.piAll);
+            Utils.AppInstance.GetPageContent(pageId, out pageXml, PageInfo.piAll);
 
             XDocument pageDoc = XDocument.Parse(pageXml);
-            page = pageDoc.Descendants(xNameSpace + "Page").First();
-            XElement pageTitle = page.Descendants(xNameSpace + "Title").First();
-            XElement pageOutline = page.Descendants(xNameSpace + "Outline").First();
-            XElement pageBodyText = pageOutline.Descendants(xNameSpace + "T").First();
-            XElement pageTitleOE = pageTitle.Descendants(xNameSpace + "OE").First();
-            XElement pageTitleText = pageTitleOE.Descendants(xNameSpace + "T").First();
+            page = pageDoc.Descendants(Utils.GetNameSpace() + "Page").First();
+            XElement pageTitle_ = page.Descendants(Utils.GetNameSpace() + "Title").First();
+            XElement pageOutline_ = page.Descendants(Utils.GetNameSpace() + "Outline").First();
+            XElement pageBodyText_ = pageOutline_.Descendants(Utils.GetNameSpace() + "T").First();
+            XElement pageTitleOE_ = pageTitle_.Descendants(Utils.GetNameSpace() + "OE").First();
+            XElement pageTitleText_ = pageTitleOE_.Descendants(Utils.GetNameSpace() + "T").First();
 
-            return new List<XElement>() { pageTitleText, pageBodyText };
+            pageTitle = pageTitleText_;
+            pageBody = pageBodyText_;
         }
 
-        private static void UpdatePageTitle(List<XElement> pageTexts, string newPageTitle)
+        public void UpdateTitle(string newPageTitle)
         {
-            pageTexts[0].Value = newPageTitle;
-            app.UpdatePageContent(page.ToString());
+            if (!string.IsNullOrEmpty(newPageTitle))
+            {
+                pageTitle.Value=newPageTitle;
+                Utils.AppInstance.UpdatePageContent(page.ToString());
+            }
         }
+    }
+
+    internal class OneNoteTest
+    {
+        private static XNamespace xNameSpace;
+
+        static void Main(string[] args)
+        {
+            xNameSpace=Utils.GetNameSpace();
+
+            string notebookId = Utils.GetXmlObjectId(null, HierarchyScope.hsNotebooks, args[0]);
+            //PrintElements(null, HierarchyScope.hsNotebooks, "name");
+
+            string sectionId= Utils.GetXmlObjectId(notebookId, HierarchyScope.hsSections, args[1]);
+            string pageId = Utils.GetXmlObjectId(sectionId, HierarchyScope.hsPages, args[2]);
+
+            //Page p = new Page(pageId);
+            //p.SetPageElements(pageId);
+            //Utils.GetProperties(p);
+        }
+
+
 
         //print the value of a specified attribute (such as name) for all elements
         private static void PrintElements(string parent, HierarchyScope scope, string attributeName)
         {
             Console.WriteLine("\n=====\nAll element names:\n=====");
-            foreach (XElement element in GetXmlObjectElements(parent, scope))
+            foreach (XElement element in Utils.GetXmlObjectElements(parent, scope))
             {
                 Console.WriteLine(element.Attribute(attributeName).Value);
             }
