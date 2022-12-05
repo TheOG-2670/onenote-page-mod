@@ -163,6 +163,7 @@ TestProject1/obj/Debug/net6.0/TestProject1.genruntimeconfig.cache
 TestProject1/obj/Debug/net6.0/TestProject1.pdb
 TestProject1/bin/Debug/net6.0/DotNetEnv.dll
 TestProject1/bin/Debug/net6.0/Sprache.dll
+<<<<<<< HEAD
 TestProject1/.env
 =======
 TestProject1/obj/Debug/net6.0/TestProject1.GeneratedMSBuildEditorConfig.editorconfig
@@ -176,3 +177,5 @@ TestProject1/obj/TestProject1.csproj.nuget.g.props
 TestProject1/obj/TestProject1.csproj.nuget.g.targets
 TestProject1/TestProject1.csproj
 >>>>>>> Stashed changes
+=======
+>>>>>>> parent of a7f6e5f (Update .gitignore)
