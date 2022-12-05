@@ -24,11 +24,14 @@ namespace TestProject1
 
         public UnitTest1()
         {
+            DotNetEnv.Env.TraversePath().Load();
+
             _application = new Application();
             Utils.AppInstance = _application;
-            notebookId = Utils.GetXmlObjectId(null, HierarchyScope.hsNotebooks, "My Notebook");
-            sectionId = Utils.GetXmlObjectId(notebookId, HierarchyScope.hsSections, "Miscellaneous");
-            pageId = Utils.GetXmlObjectId(sectionId, HierarchyScope.hsPages, "hello123hi");
+
+            notebookId = Utils.GetXmlObjectId(null, HierarchyScope.hsNotebooks, Environment.GetEnvironmentVariable("NOTEBOOK_TITLE"));
+            sectionId = Utils.GetXmlObjectId(notebookId, HierarchyScope.hsSections, Environment.GetEnvironmentVariable("SECTION_TITLE"));
+            pageId = Utils.GetXmlObjectId(sectionId, HierarchyScope.hsPages, Environment.GetEnvironmentVariable("CURRENT_PAGE_TITLE"));
         }
 
         [Fact]
@@ -55,10 +58,10 @@ namespace TestProject1
             p.GetPageElements();
 
             Assert.NotNull(p.Id);
-            Assert.Equal("hello123hi", p.Title.Value);
+            Assert.Equal(Environment.GetEnvironmentVariable("CURRENT_PAGE_TITLE"), p.Title.Value);
 
-            string expectedString = "this is a test";
-            expectedString.ToList().ForEach(word =>
+            string? expectedString = Environment.GetEnvironmentVariable("PAGE_BODY");
+            expectedString?.ToList().ForEach(word =>
             {
                 Assert.Contains(word, p.Body.Value);
             });
@@ -71,7 +74,7 @@ namespace TestProject1
             Page p = new Page(pageId);
             p.GetPageElements();
 
-            string newTitle = "hello123";
+            string? newTitle = Environment.GetEnvironmentVariable("NEW_PAGE_TITLE");
             p.UpdateTitle(newTitle);
             Assert.Equal(newTitle, p.Title.Value);
         }
