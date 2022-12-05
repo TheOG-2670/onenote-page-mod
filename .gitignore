@@ -127,3 +127,5 @@ TestProject1/obj/Debug/net6.0/TestProject1.csproj.ResolveComReference.cache
 TestProject1/obj/Debug/net6.0/TestProject1.dll
 TestProject1/obj/Debug/net6.0/TestProject1.genruntimeconfig.cache
 TestProject1/obj/Debug/net6.0/TestProject1.pdb
+TestProject1/bin/Debug/net6.0/DotNetEnv.dll
+TestProject1/bin/Debug/net6.0/Sprache.dll
