@@ -9,7 +9,6 @@
 *.sln
 flow diagram.drawio
 OneNoteTest/OneNoteTest.csproj.user
-<<<<<<< Updated upstream
 .vs/ProjectEvaluation/onenotetest.metadata.v5
 .vs/ProjectEvaluation/onenotetest.projects.v5
 TestProject1/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs
@@ -25,7 +24,6 @@ TestProject1/obj/TestProject1.csproj.nuget.dgspec.json
 TestProject1/obj/TestProject1.csproj.nuget.g.props
 TestProject1/obj/TestProject1.csproj.nuget.g.targets
 TestProject1/TestProject1.csproj
-=======
 TestProject1/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs
 TestProject1/obj/Debug/net6.0/Interop.Microsoft.Office.Interop.OneNote.dll
 TestProject1/obj/Debug/net6.0/TestProject1.AssemblyInfo.cs
@@ -37,7 +35,6 @@ TestProject1/obj/Debug/net6.0/TestProject1.GlobalUsings.g.cs
 .vs/ProjectEvaluation/onenotetest.metadata.v5
 .vs/ProjectEvaluation/onenotetest.projects.v5
 TestProject1/.env
->>>>>>> Stashed changes
 TestProject1/bin/Debug/net6.0/cs/Microsoft.TestPlatform.CommunicationUtilities.resources.dll
 TestProject1/bin/Debug/net6.0/cs/Microsoft.TestPlatform.CoreUtilities.resources.dll
 TestProject1/bin/Debug/net6.0/cs/Microsoft.TestPlatform.CrossPlatEngine.resources.dll
@@ -48,10 +45,8 @@ TestProject1/bin/Debug/net6.0/de/Microsoft.TestPlatform.CoreUtilities.resources.
 TestProject1/bin/Debug/net6.0/de/Microsoft.TestPlatform.CrossPlatEngine.resources.dll
 TestProject1/bin/Debug/net6.0/de/Microsoft.VisualStudio.TestPlatform.Common.resources.dll
 TestProject1/bin/Debug/net6.0/de/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
-<<<<<<< Updated upstream
-=======
 TestProject1/bin/Debug/net6.0/DotNetEnv.dll
->>>>>>> Stashed changes
+TestProject1/bin/Debug/net6.0/DotNetEnv.dll
 TestProject1/bin/Debug/net6.0/es/Microsoft.TestPlatform.CommunicationUtilities.resources.dll
 TestProject1/bin/Debug/net6.0/es/Microsoft.TestPlatform.CoreUtilities.resources.dll
 TestProject1/bin/Debug/net6.0/es/Microsoft.TestPlatform.CrossPlatEngine.resources.dll
@@ -105,10 +100,8 @@ TestProject1/bin/Debug/net6.0/ru/Microsoft.TestPlatform.CoreUtilities.resources.
 TestProject1/bin/Debug/net6.0/ru/Microsoft.TestPlatform.CrossPlatEngine.resources.dll
 TestProject1/bin/Debug/net6.0/ru/Microsoft.VisualStudio.TestPlatform.Common.resources.dll
 TestProject1/bin/Debug/net6.0/ru/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
-<<<<<<< Updated upstream
-=======
 TestProject1/bin/Debug/net6.0/Sprache.dll
->>>>>>> Stashed changes
+TestProject1/bin/Debug/net6.0/Sprache.dll
 TestProject1/bin/Debug/net6.0/testhost.dll
 TestProject1/bin/Debug/net6.0/testhost.exe
 TestProject1/bin/Debug/net6.0/TestProject1.deps.json
@@ -137,35 +130,26 @@ TestProject1/bin/Debug/net6.0/zh-Hant/Microsoft.TestPlatform.CoreUtilities.resou
 TestProject1/bin/Debug/net6.0/zh-Hant/Microsoft.TestPlatform.CrossPlatEngine.resources.dll
 TestProject1/bin/Debug/net6.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.Common.resources.dll
 TestProject1/bin/Debug/net6.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
-<<<<<<< Updated upstream
-=======
 TestProject1/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs
->>>>>>> Stashed changes
+TestProject1/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs
 TestProject1/obj/Debug/net6.0/_IsIncrementalBuild
 TestProject1/obj/Debug/net6.0/Interop.Microsoft.Office.Interop.OneNote.dll
 TestProject1/obj/Debug/net6.0/ref/TestProject1.dll
 TestProject1/obj/Debug/net6.0/refint/TestProject1.dll
-<<<<<<< Updated upstream
-=======
 TestProject1/obj/Debug/net6.0/TestProject1.AssemblyInfo.cs
 TestProject1/obj/Debug/net6.0/TestProject1.AssemblyInfoInputs.cache
 TestProject1/obj/Debug/net6.0/TestProject1.assets.cache
 TestProject1/obj/Debug/net6.0/TestProject1.csproj.AssemblyReference.cache
->>>>>>> Stashed changes
 TestProject1/obj/Debug/net6.0/TestProject1.csproj.BuildWithSkipAnalyzers
 TestProject1/obj/Debug/net6.0/TestProject1.csproj.CopyComplete
 TestProject1/obj/Debug/net6.0/TestProject1.csproj.CoreCompileInputs.cache
 TestProject1/obj/Debug/net6.0/TestProject1.csproj.FileListAbsolute.txt
 TestProject1/obj/Debug/net6.0/TestProject1.csproj.ResolveComReference.cache
 TestProject1/obj/Debug/net6.0/TestProject1.dll
-<<<<<<< Updated upstream
 TestProject1/obj/Debug/net6.0/TestProject1.genruntimeconfig.cache
 TestProject1/obj/Debug/net6.0/TestProject1.pdb
 TestProject1/bin/Debug/net6.0/DotNetEnv.dll
 TestProject1/bin/Debug/net6.0/Sprache.dll
-<<<<<<< HEAD
-TestProject1/.env
-=======
 TestProject1/obj/Debug/net6.0/TestProject1.GeneratedMSBuildEditorConfig.editorconfig
 TestProject1/obj/Debug/net6.0/TestProject1.genruntimeconfig.cache
 TestProject1/obj/Debug/net6.0/TestProject1.GlobalUsings.g.cs
@@ -176,6 +160,3 @@ TestProject1/obj/TestProject1.csproj.nuget.dgspec.json
 TestProject1/obj/TestProject1.csproj.nuget.g.props
 TestProject1/obj/TestProject1.csproj.nuget.g.targets
 TestProject1/TestProject1.csproj
->>>>>>> Stashed changes
-=======
->>>>>>> parent of a7f6e5f (Update .gitignore)
