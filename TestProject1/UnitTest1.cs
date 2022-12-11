@@ -7,6 +7,7 @@ namespace TestProject1
         private static Application? _application;
         private static string notebookId="", sectionId="", pageId="";
 
+
         internal static void ReleaseAppInstance()
         {
             if(Utils.AppInstance!=null && _application != null)
@@ -74,18 +75,38 @@ namespace TestProject1
             Page p = new Page(pageId);
             p.GetPageElements();
 
-            string title = "hi";
             try
             {
-                p.UpdateTitle(title);
+                p.UpdateTitle(Environment.GetEnvironmentVariable("CURRENT_PAGE_TITLE"));
             }
             catch(Exception ex)
             {
                 Assert.NotNull(ex.Message);
             }
+            Assert.Equal(Environment.GetEnvironmentVariable("CURRENT_PAGE_TITLE"), p.Title.Value);
+        }
 
-            string existingTitle = p.Title.Value;
-            Assert.Equal(title, existingTitle);
+        [Fact]
+        public void CheckDifferentTitleAccepted()
+        {
+
+            Page p = new Page(pageId);
+            p.GetPageElements();
+
+            if (!Environment.GetEnvironmentVariable("CURRENT_PAGE_TITLE").Equals(p.Title.Value))
+            {
+
+                try
+                {
+                    p.UpdateTitle(Environment.GetEnvironmentVariable("NEW_PAGE_TITLE"));
+                    Assert.Equal(Environment.GetEnvironmentVariable("NEW_PAGE_TITLE"), p.Title.Value);
+                }
+                catch (Exception ex)
+                {
+                    //
+                }
+            }
+
         }
 
         ~UnitTest1()
