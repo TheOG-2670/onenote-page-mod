@@ -68,15 +68,24 @@ namespace TestProject1
         }
 
         [Fact]
-        public void CheckChangePageTitle()
+        public void CheckSameTitleRejected()
         {
 
             Page p = new Page(pageId);
             p.GetPageElements();
 
-            string? newTitle = Environment.GetEnvironmentVariable("NEW_PAGE_TITLE");
-            p.UpdateTitle(newTitle);
-            Assert.Equal(newTitle, p.Title.Value);
+            string title = "hi";
+            try
+            {
+                p.UpdateTitle(title);
+            }
+            catch(Exception ex)
+            {
+                Assert.NotNull(ex.Message);
+            }
+
+            string existingTitle = p.Title.Value;
+            Assert.Equal(title, existingTitle);
         }
 
         ~UnitTest1()

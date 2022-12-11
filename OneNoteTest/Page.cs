@@ -50,6 +50,11 @@ namespace OneNoteTest
 
         public void UpdateTitle(string newPageTitle)
         {
+            if (newPageTitle.Equals(pageTitle.Value))
+            {
+                throw new System.Exception("same title!");
+            }
+
             if (!string.IsNullOrEmpty(newPageTitle))
             {
                 pageTitle.Value = newPageTitle;
