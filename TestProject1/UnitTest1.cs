@@ -49,24 +49,6 @@ namespace TestProject1
         }
 
         [Fact]
-        public void CheckPageInfoIsCorrect()
-        {
-
-
-            Page p = new Page(pageId);
-            p.GetPageElements();
-
-            Assert.NotNull(p.Id);
-            Assert.NotEmpty(p.Title.Value);
-
-            string? expectedString = Environment.GetEnvironmentVariable("PAGE_BODY");
-            expectedString?.ToList().ForEach(word =>
-            {
-                Assert.Contains(word, p.Body.Value);
-            });
-        }
-
-        [Fact]
         public void CheckChangePageTitle()
         {
 
