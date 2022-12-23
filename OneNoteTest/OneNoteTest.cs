@@ -13,14 +13,20 @@ namespace OneNoteTest
             xNameSpace=Utils.GetNameSpace();
 
             string notebookId = Utils.GetXmlObjectId(null, HierarchyScope.hsNotebooks, args[0]);
-            //PrintElements(null, HierarchyScope.hsNotebooks, "name");
-
             string sectionId= Utils.GetXmlObjectId(notebookId, HierarchyScope.hsSections, args[1]);
             string pageId = Utils.GetXmlObjectId(sectionId, HierarchyScope.hsPages, args[2]);
 
-            Page p = new Page(pageId);
-            p.GetPageElements();
-            Utils.GetProperties(p);
+            try
+            {
+                Page p = new Page(pageId);
+                p.UpdateTitle(args[3]);
+                Console.WriteLine($"Existing title: {args[2]} \nUpdated title: {p.Title.Value}");
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Error occurred during title update: {ex.Message}");
+            }
+            
         }
 
 
