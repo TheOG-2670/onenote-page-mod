@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Xml.Linq;
 
 namespace TestProject1
 {
@@ -10,10 +11,9 @@ namespace TestProject1
 
         internal static void ReleaseAppInstance()
         {
-            if(Utils.AppInstance!=null && _application != null)
+            if(OneNoteSingleton.Instance != null && _application != null)
             {
-                Marshal.ReleaseComObject(Utils.AppInstance);
-                Utils.AppInstance = null;
+                Marshal.ReleaseComObject(OneNoteSingleton.Instance);
                 _application = null;
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
@@ -28,7 +28,6 @@ namespace TestProject1
             DotNetEnv.Env.TraversePath().Load();
 
             _application = new Application();
-            Utils.AppInstance = _application;
 
             notebookId = Utils.GetXmlObjectId(null, HierarchyScope.hsNotebooks, Environment.GetEnvironmentVariable("NOTEBOOK_TITLE"));
             sectionId = Utils.GetXmlObjectId(notebookId, HierarchyScope.hsSections, Environment.GetEnvironmentVariable("SECTION_TITLE"));
@@ -38,7 +37,7 @@ namespace TestProject1
         [Fact]
         public void CheckAppInstanceNotNull()
         {
-            Assert.NotNull(Utils.AppInstance);   
+            Assert.NotNull(OneNoteSingleton.Instance);   
         }
 
         [Fact]
@@ -51,30 +50,14 @@ namespace TestProject1
         }
 
         [Fact]
-        public void CheckPageInfoIsCorrect()
-        {
-
-
-            Page p = new Page(pageId);
-            p.GetPageElements();
-
-            Assert.NotNull(p.Id);
-            Assert.NotEmpty(p.Title.Value);
-
-            string? expectedString = Environment.GetEnvironmentVariable("PAGE_BODY");
-            expectedString?.ToList().ForEach(word =>
-            {
-                Assert.Contains(word, p.Body.Value);
-            });
-        }
-
-        [Fact]
-        public void CheckSameTitleRejected()
+        public void CheckChangePageTitle()
         {
 
             Page p = new Page(pageId);
-            p.GetPageElements();
 
+            string? newTitle = Environment.GetEnvironmentVariable("NEW_PAGE_TITLE");
+            p.UpdateTitle(newTitle);
+            Assert.Equal(newTitle, p.Title.Value);
             try
             {
                 p.UpdateTitle(Environment.GetEnvironmentVariable("CURRENT_PAGE_TITLE"));
@@ -91,7 +74,6 @@ namespace TestProject1
         {
 
             Page p = new Page(pageId);
-            p.GetPageElements();
 
             if (!Environment.GetEnvironmentVariable("CURRENT_PAGE_TITLE").Equals(p.Title.Value))
             {
@@ -106,7 +88,30 @@ namespace TestProject1
                     //
                 }
             }
+            string? newTitle = Environment.GetEnvironmentVariable("NEW_PAGE_TITLE");
+            p.UpdateTitle(newTitle);
+            Assert.Equal(newTitle, p.Title.Value);
+        }
 
+        [Fact]
+        public void CheckAccessMultiplePages()
+        {
+            List<Page> pages = new List<Page>();
+            List<XElement> xPages = Utils.GetXmlObjectElements(sectionId, HierarchyScope.hsPages);
+
+            Assert.NotEmpty(xPages);
+
+            foreach(XElement p in xPages)
+            {
+                string? id = p.Attribute("ID")?.Value;
+                if (string.IsNullOrEmpty(id))
+                {
+                    break;
+                }
+                pages.Add(new Page(id));
+            }
+
+            pages.ForEach(p => Assert.NotEmpty(p.Title.Value));
         }
 
         ~UnitTest1()

@@ -9,19 +9,13 @@ namespace OneNoteTest
 {
     public class Utils
     {
-        public static Application AppInstance
-        {
-            get;
-            set;
-        }
-
-
+        
         //get notebook's xml namespace used for traversing the notebook tree and searching for nodes (namespace + nodeName)
         public static XNamespace GetNameSpace()
         {
             string notebookXml;
 
-            AppInstance.GetHierarchy(null, HierarchyScope.hsNotebooks, out notebookXml);
+            OneNoteSingleton.Instance.GetHierarchy(null, HierarchyScope.hsNotebooks, out notebookXml);
             XDocument doc = XDocument.Parse(notebookXml);
             return doc.Root.Name.Namespace;
         }
@@ -31,7 +25,7 @@ namespace OneNoteTest
         {
             string xml;
             string nodeType = null;
-            AppInstance.GetHierarchy(parent, scope, out xml);
+            OneNoteSingleton.Instance.GetHierarchy(parent, scope, out xml);
 
             switch (scope)
             {
