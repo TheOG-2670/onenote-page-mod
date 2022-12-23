@@ -12,6 +12,10 @@ namespace OneNoteTest
 
         public Page(string id)
         {
+            if(id == null)
+            {
+                throw new System.Exception("null page id!");
+            }
             pageId = id;
             GetPageElements();
         }
@@ -28,14 +32,14 @@ namespace OneNoteTest
 
         internal void GetPageElements()
         {
-            Utils.AppInstance.GetPageContent(pageId, out string pageXml, PageInfo.piAll);
+            OneNoteSingleton.Instance.GetPageContent(pageId, out string pageXml, PageInfo.piAll);
 
             XDocument pageDoc = XDocument.Parse(pageXml);
             page = pageDoc.Descendants(Utils.GetNameSpace() + "Page").First();
             XElement pageTitle_ = page.Descendants(Utils.GetNameSpace() + "Title").First();
             XElement pageTitleOE_ = pageTitle_.Descendants(Utils.GetNameSpace() + "OE").First();
             XElement pageTitleText_ = pageTitleOE_.Descendants(Utils.GetNameSpace() + "T").First();
-            if(string.IsNullOrEmpty(pageTitleText_.Value))
+            if(string.IsNullOrEmpty(pageTitleText_.Value)) //some pages have two 'T' nodes with the first one being empty and second containing the actual title text
             {
                 pageTitleText_= (XElement)pageTitleOE_.Descendants(Utils.GetNameSpace() + "T").First().NextNode;
             }
@@ -47,8 +51,12 @@ namespace OneNoteTest
         {
             if (!string.IsNullOrEmpty(newPageTitle))
             {
+                if(newPageTitle.Equals(pageTitle.Value))
+                {
+                    throw new System.Exception("same title!");
+                }
                 pageTitle.Value = newPageTitle;
-                Utils.AppInstance.UpdatePageContent(page.ToString());
+                OneNoteSingleton.Instance.UpdatePageContent(page.ToString());
             }
         }
     }
